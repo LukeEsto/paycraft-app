@@ -1,0 +1,42 @@
+:root {
+  --paycraft-green: #004225;
+  --paycraft-green-hover: #00351e;
+  --paycraft-black: #000000;
+  --paycraft-grey: #d9d9d9;
+  --surface: #ffffff;
+  --background: #f7f8f7;
+  --muted: #5e6963;
+  --radius: 14px;
+  --shadow: 0 12px 35px rgb(0 66 37 / 10%);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--background); }
+body {
+  margin: 0;
+  color: var(--paycraft-black);
+  background: var(--background);
+  font-family: Helvetica, Arial, sans-serif;
+}
+button, input, textarea, select { font: inherit; }
+a { color: inherit; }
+.shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.card {
+  width: min(100%, 560px);
+  background: var(--surface);
+  border: 1px solid #e7ebe8;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(24px, 5vw, 48px);
+}
+.brand { color: var(--paycraft-green); font-weight: 800; letter-spacing: -0.04em; }
+.eyebrow { color: var(--paycraft-green); font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; }
+h1 { margin: 8px 0 12px; font-size: clamp(2rem, 7vw, 3.4rem); line-height: 1; letter-spacing: -0.05em; }
+p { color: var(--muted); line-height: 1.6; }
+.button {
+  display: inline-flex; min-height: 48px; align-items: center; justify-content: center;
+  border: 0; border-radius: 10px; padding: 0 20px; background: var(--paycraft-green);
+  color: white; font-weight: 700; text-decoration: none;
+}
+.button:hover { background: var(--paycraft-green-hover); }
+.notice { margin-top: 24px; border-left: 4px solid var(--paycraft-green); background: #edf6f1; padding: 14px 16px; border-radius: 8px; }

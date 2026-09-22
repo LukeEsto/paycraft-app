@@ -1,0 +1,3 @@
+-- Authentication users must be created through Supabase Auth. Feature-level seed helpers
+-- will be added with the vertical slice so hashes and identities are never hand-crafted here.
+-- This file intentionally remains deterministic and contains no real PayCraft user data.
