@@ -40,3 +40,37 @@ p { color: var(--muted); line-height: 1.6; }
 }
 .button:hover { background: var(--paycraft-green-hover); }
 .notice { margin-top: 24px; border-left: 4px solid var(--paycraft-green); background: #edf6f1; padding: 14px 16px; border-radius: 8px; }
+.align-start { place-items: start center; }
+.registration-card { width: min(100%, 720px); }
+.form-title { font-size: clamp(2rem, 6vw, 3rem); }
+.form-stack { display: grid; gap: 18px; margin-top: 28px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.field { display: grid; gap: 7px; }
+.field label { font-weight: 700; }
+.field input, .field select {
+  width: 100%; min-height: 48px; border: 1px solid #b8c1bc; border-radius: 9px;
+  padding: 10px 12px; background: white; color: var(--paycraft-black);
+}
+.field input:focus, .field select:focus { outline: 3px solid rgb(0 66 37 / 18%); border-color: var(--paycraft-green); }
+.field-hint { margin: 0; font-size: 0.82rem; }
+.field-error { margin: 0; color: #a21b1b; font-size: 0.86rem; font-weight: 700; }
+.check-row { display: flex; gap: 10px; align-items: flex-start; color: #313b35; line-height: 1.4; }
+.check-row input { width: 20px; height: 20px; accent-color: var(--paycraft-green); }
+.form-message { border-radius: 9px; background: #fff1f1; color: #8c1717; padding: 12px 14px; font-weight: 700; }
+.button:disabled { cursor: not-allowed; opacity: 0.55; }
+.dashboard-shell { min-height: 100vh; background: var(--background); }
+.dashboard-header { display: flex; justify-content: space-between; align-items: center; padding: 20px clamp(20px, 5vw, 64px); background: white; border-bottom: 1px solid #e4e8e5; }
+.dashboard-kicker { margin: 3px 0 0; font-weight: 700; color: var(--paycraft-black); }
+.user-chip { border-radius: 999px; background: #edf6f1; color: var(--paycraft-green); padding: 9px 13px; font-weight: 700; }
+.dashboard-content { width: min(100%, 1100px); margin: 0 auto; padding: clamp(32px, 7vw, 72px) 20px; display: grid; gap: 38px; }
+.dashboard-title { font-size: clamp(2rem, 6vw, 3.5rem); }
+.empty-state { background: white; border: 1px solid #e4e8e5; border-radius: var(--radius); padding: clamp(24px, 5vw, 42px); box-shadow: var(--shadow); }
+.empty-state h2 { margin: 18px 0 8px; }
+.status-badge { display: inline-flex; border-radius: 999px; background: var(--paycraft-grey); padding: 6px 10px; font-size: 0.8rem; font-weight: 800; }
+@media (max-width: 640px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .shell { padding: 14px; }
+  .card { padding: 24px 20px; }
+  .dashboard-header { padding: 16px; }
+  .user-chip { max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}

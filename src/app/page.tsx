@@ -12,6 +12,7 @@ export default function Home() {
         <div className="notice">
           Payments are simulated. PayCraft does not receive, hold, safeguard or release funds in this trial.
         </div>
+        <p><a className="button" href="/register">Create tradesperson account</a></p>
       </section>
     </main>
   );
