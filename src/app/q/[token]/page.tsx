@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { formatGbp } from "@/lib/quotes/current-business-quotes";
 import { resolveInviteToken } from "@/lib/invites/resolve-invite";
+import { EmailVerification } from "./email-verification";
 
 export const dynamic = "force-dynamic";
 
@@ -55,7 +56,8 @@ export default async function CustomerQuotePage({ params }: CustomerQuotePagePro
           <div className="quote-total"><span>Total</span><strong>{formatGbp(quote.total_pence)}</strong></div>
         </section>
 
-        <div className="notice">This feasibility page is view-only. Quote acceptance is not enabled in this package.</div>
+        <EmailVerification token={token} alreadyVerified={quote.email_verified} />
+        <div className="notice">This feasibility page remains view-only. Verification does not accept the quote or create a payment.</div>
       </article>
     </main>
   );

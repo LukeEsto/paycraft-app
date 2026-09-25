@@ -18,6 +18,7 @@ export interface PublicQuote {
   scope: string;
   total_pence: number;
   currency: "GBP";
+  email_verified: boolean;
   items: PublicQuoteItem[];
 }
 
