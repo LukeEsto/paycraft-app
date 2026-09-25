@@ -57,6 +57,6 @@ See `docs/architecture/` for recorded decisions. Schema changes must use SQL mig
 ## Current scope
 
 Sprint 0 provides the application shell, design tokens, schema, RLS baseline, provider abstractions,
-quality checks and documentation. The first bounded feature adds tradesperson registration, atomic
-business onboarding, versioned consent records, audit events and a protected Jobs dashboard shell.
-Customer and quote features remain outside the current implementation.
+quality checks and documentation. The first bounded features add tradesperson registration, atomic
+business onboarding, versioned consent records, customer creation, audit events and a protected Jobs
+dashboard. Quote creation and the remaining vertical slice are outside the current implementation.
