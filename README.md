@@ -59,5 +59,5 @@ See `docs/architecture/` for recorded decisions. Schema changes must use SQL mig
 Sprint 0 provides the application shell, design tokens, schema, RLS baseline, provider abstractions,
 quality checks and documentation. The first bounded features add tradesperson registration, atomic
 business onboarding, versioned consent records, customer creation, versioned draft quote creation,
-audit events and a protected Jobs dashboard. Secure quote delivery and the remaining vertical slice
-are outside the current implementation.
+secure mock quote delivery, audit events and a protected Jobs dashboard. Customer verification,
+acceptance and the remaining vertical slice are outside the current implementation.

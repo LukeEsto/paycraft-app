@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireCurrentTrade } from "@/lib/auth/current-trade";
 import { getCurrentBusinessCustomers } from "@/lib/customers/current-business-customers";
 import { formatGbp, getCurrentBusinessQuotes } from "@/lib/quotes/current-business-quotes";
+import { SendQuoteForm } from "./send-quote-form";
 
 export default async function DashboardPage() {
   const [trade, customers, quotes] = await Promise.all([
@@ -80,7 +81,11 @@ export default async function DashboardPage() {
                     <strong>{quote.jobTitle}</strong>
                     <span>{quote.customerName} · {formatGbp(quote.totalPence)}</span>
                   </div>
-                  <span className="status-badge">{quote.status.toLowerCase()}</span>
+                  {quote.status === "DRAFT" ? (
+                    <SendQuoteForm quoteId={quote.id} />
+                  ) : (
+                    <span className="status-badge">{quote.status.toLowerCase()}</span>
+                  )}
                 </li>
               ))}
             </ul>

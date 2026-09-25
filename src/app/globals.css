@@ -89,6 +89,17 @@ p { color: var(--muted); line-height: 1.6; }
 .line-item { display: grid; gap: 14px; padding: 18px; border: 1px solid #dfe5e1; border-radius: 11px; background: #fbfcfb; }
 .line-item-heading { display: flex; align-items: center; justify-content: space-between; }
 .text-button { border: 0; padding: 4px; background: transparent; color: #8c1717; font-weight: 700; cursor: pointer; }
+.send-quote-form { display: grid; justify-items: end; gap: 8px; max-width: 360px; }
+.send-quote-form p { margin: 0; text-align: right; }
+.delivery-message { color: var(--muted); font-size: 0.85rem; }
+.preview-link { color: var(--paycraft-green); font-size: 0.9rem; font-weight: 800; }
+.quote-scope { margin: 34px 0; padding-top: 24px; border-top: 1px solid #e4e8e5; }
+.quote-scope h2, .quote-card section h2 { font-size: 1.3rem; }
+.quote-items-list { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid #e4e8e5; }
+.quote-items-list li { display: flex; justify-content: space-between; gap: 20px; padding: 16px 0; border-bottom: 1px solid #e4e8e5; }
+.quote-items-list li div { display: grid; gap: 5px; }
+.quote-items-list li span { color: var(--muted); }
+.quote-total { display: flex; justify-content: space-between; padding: 22px 0 0; font-size: 1.25rem; }
 @media (max-width: 640px) {
   .form-grid { grid-template-columns: 1fr; }
   .shell { padding: 14px; }
@@ -96,4 +107,6 @@ p { color: var(--muted); line-height: 1.6; }
   .dashboard-header { padding: 16px; }
   .user-chip { max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .section-heading, .customer-row, .section-actions { align-items: stretch; flex-direction: column; }
+  .send-quote-form { justify-items: stretch; max-width: none; }
+  .send-quote-form p { text-align: left; }
 }
