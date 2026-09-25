@@ -3,7 +3,11 @@ import { redirect } from "next/navigation";
 import { getCurrentBusinessCustomers } from "@/lib/customers/current-business-customers";
 import { QuoteForm } from "./quote-form";
 
-export default async function NewQuotePage({ searchParams }: PageProps<"/quotes/new">) {
+interface NewQuotePageProps {
+  searchParams: Promise<{ customer?: string | string[] }>;
+}
+
+export default async function NewQuotePage({ searchParams }: NewQuotePageProps) {
   const [customers, query] = await Promise.all([getCurrentBusinessCustomers(), searchParams]);
   if (customers.length === 0) redirect("/customers/new");
   const selectedCustomerId = typeof query.customer === "string" && customers.some((customer) => customer.id === query.customer)

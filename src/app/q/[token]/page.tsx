@@ -9,7 +9,11 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function CustomerQuotePage({ params }: PageProps<"/q/[token]">) {
+interface CustomerQuotePageProps {
+  params: Promise<{ token: string }>;
+}
+
+export default async function CustomerQuotePage({ params }: CustomerQuotePageProps) {
   const { token } = await params;
   const quote = await resolveInviteToken(token);
 
