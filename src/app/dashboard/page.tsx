@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { requireCurrentTrade } from "@/lib/auth/current-trade";
 import { getCurrentBusinessCustomers } from "@/lib/customers/current-business-customers";
+import { formatGbp, getCurrentBusinessQuotes } from "@/lib/quotes/current-business-quotes";
 
 export default async function DashboardPage() {
-  const [trade, customers] = await Promise.all([
+  const [trade, customers, quotes] = await Promise.all([
     requireCurrentTrade(),
     getCurrentBusinessCustomers(),
+    getCurrentBusinessQuotes(),
   ]);
 
   return (
@@ -31,7 +33,10 @@ export default async function DashboardPage() {
               <span className="status-badge">{customers.length} {customers.length === 1 ? "customer" : "customers"}</span>
               <h2 id="customers-title">Customers</h2>
             </div>
-            <Link className="button" href="/customers/new">Add customer</Link>
+            <div className="section-actions">
+              <Link className="button secondary-button" href="/customers/new">Add customer</Link>
+              {customers.length > 0 && <Link className="button" href="/quotes/new">Create quote</Link>}
+            </div>
           </div>
 
           {customers.length === 0 ? (
@@ -47,7 +52,35 @@ export default async function DashboardPage() {
                     <strong>{customer.fullName}</strong>
                     <span>{customer.email}</span>
                   </div>
-                  <button className="button secondary-button" type="button" disabled>Create quote</button>
+                  <Link className="button secondary-button" href={{ pathname: "/quotes/new", query: { customer: customer.id } }}>Create quote</Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        <section className="customer-section" aria-labelledby="quotes-title">
+          <div className="section-heading">
+            <div>
+              <span className="status-badge">{quotes.length} {quotes.length === 1 ? "quote" : "quotes"}</span>
+              <h2 id="quotes-title">Quotes</h2>
+            </div>
+          </div>
+
+          {quotes.length === 0 ? (
+            <div className="empty-state compact-empty">
+              <h3>No draft quotes yet</h3>
+              <p>Create a customer first, then record the work and price.</p>
+            </div>
+          ) : (
+            <ul className="customer-list">
+              {quotes.map((quote) => (
+                <li className="customer-row" key={quote.id}>
+                  <div>
+                    <strong>{quote.jobTitle}</strong>
+                    <span>{quote.customerName} · {formatGbp(quote.totalPence)}</span>
+                  </div>
+                  <span className="status-badge">{quote.status.toLowerCase()}</span>
                 </li>
               ))}
             </ul>
