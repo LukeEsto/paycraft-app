@@ -56,8 +56,15 @@ export default async function CustomerQuotePage({ params }: CustomerQuotePagePro
           <div className="quote-total"><span>Total</span><strong>{formatGbp(quote.total_pence)}</strong></div>
         </section>
 
-        <EmailVerification token={token} alreadyVerified={quote.email_verified} />
-        <div className="notice">This feasibility page remains view-only. Verification does not accept the quote or create a payment.</div>
+        <EmailVerification
+          token={token}
+          alreadyVerified={quote.email_verified}
+          quoteId={quote.quote_id}
+          versionId={quote.version_id}
+          versionNumber={quote.version_number}
+          totalPence={quote.total_pence}
+        />
+        <div className="notice">Accepting records agreement to this quote only. It does not collect money, create milestones or start a payment.</div>
       </article>
     </main>
   );

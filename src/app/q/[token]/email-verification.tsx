@@ -2,6 +2,8 @@
 
 import { useActionState } from "react";
 import {
+  acceptQuote,
+  type AcceptQuoteState,
   startEmailVerification,
   type StartVerificationState,
   verifyEmailCode,
@@ -10,20 +12,90 @@ import {
 
 const initialStartState: StartVerificationState = {};
 const initialVerifyState: VerifyEmailState = {};
+const initialAcceptState: AcceptQuoteState = {};
 
-export function EmailVerification({ token, alreadyVerified }: { token: string; alreadyVerified: boolean }) {
-  const [startState, startAction, startPending] = useActionState(startEmailVerification, initialStartState);
-  const [verifyState, verifyAction, verifyPending] = useActionState(verifyEmailCode, initialVerifyState);
+interface EmailVerificationProps {
+  token: string;
+  alreadyVerified: boolean;
+  quoteId: string;
+  versionId: string;
+  versionNumber: number;
+  totalPence: number;
+}
 
-  if (verifyState.verified) {
-    return <div className="verification-success" role="status">{verifyState.message}</div>;
+function formatGbp(pence: number): string {
+  return new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP" }).format(pence / 100);
+}
+
+function QuoteAcceptance({
+  token,
+  quoteId,
+  versionId,
+  versionNumber,
+  totalPence,
+}: Omit<EmailVerificationProps, "alreadyVerified">) {
+  const [state, action, pending] = useActionState(acceptQuote, initialAcceptState);
+
+  if (state.accepted) {
+    return (
+      <section className="acceptance-confirmation" aria-labelledby="acceptance-confirmation-title" role="status">
+        <span className="status-badge">Accepted</span>
+        <h2 id="acceptance-confirmation-title">Your quote is accepted</h2>
+        <p>{state.message}</p>
+        <dl>
+          <div><dt>Accepted version</dt><dd>{state.acceptedVersionNumber}</dd></div>
+          <div><dt>Accepted amount</dt><dd>{formatGbp(state.acceptedAmountPence ?? totalPence)}</dd></div>
+          {state.acceptedAt && <div><dt>Accepted at</dt><dd>{new Date(state.acceptedAt).toLocaleString("en-GB")}</dd></div>}
+        </dl>
+      </section>
+    );
   }
 
-  if (alreadyVerified) {
+  return (
+    <section className="acceptance-panel" aria-labelledby="acceptance-title">
+      <h2 id="acceptance-title">Accept this quote</h2>
+      <p>You are accepting version {versionNumber} for a total of <strong>{formatGbp(totalPence)}</strong>.</p>
+      <form action={action}>
+        <input name="token" type="hidden" value={token} />
+        <input name="quoteId" type="hidden" value={quoteId} />
+        <input name="versionId" type="hidden" value={versionId} />
+        <input name="versionNumber" type="hidden" value={versionNumber} />
+        <input name="totalPence" type="hidden" value={totalPence} />
+        <button className="button" type="submit" disabled={pending}>
+          {pending ? "Accepting…" : `Accept quote for ${formatGbp(totalPence)}`}
+        </button>
+        {state.message && <p className="field-error" role="alert">{state.message}</p>}
+      </form>
+    </section>
+  );
+}
+
+export function EmailVerification({
+  token,
+  alreadyVerified,
+  quoteId,
+  versionId,
+  versionNumber,
+  totalPence,
+}: EmailVerificationProps) {
+  const [startState, startAction, startPending] = useActionState(startEmailVerification, initialStartState);
+  const [verifyState, verifyAction, verifyPending] = useActionState(verifyEmailCode, initialVerifyState);
+  const hasVerification = alreadyVerified || verifyState.verified === true;
+
+  if (hasVerification) {
     return (
-      <div className="verification-success" role="status">
-        Email verification has already been completed for this quote. Consequential actions will also require the original verified browser capability.
-      </div>
+      <>
+        <div className="verification-success" role="status">
+          {verifyState.message ?? "Email verification is complete. Acceptance still requires the original verified browser capability."}
+        </div>
+        <QuoteAcceptance
+          token={token}
+          quoteId={quoteId}
+          versionId={versionId}
+          versionNumber={versionNumber}
+          totalPence={totalPence}
+        />
+      </>
     );
   }
 

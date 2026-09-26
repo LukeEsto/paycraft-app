@@ -12,6 +12,8 @@ export interface PublicQuoteItem {
 
 export interface PublicQuote {
   quote_id: string;
+  version_id: string;
+  version_number: number;
   trading_name: string;
   customer_name: string;
   job_title: string;

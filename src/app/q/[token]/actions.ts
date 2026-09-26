@@ -11,6 +11,10 @@ import {
   maskEmail,
 } from "@/lib/invites/verification";
 import { getNotificationProvider } from "@/lib/notifications/provider";
+import {
+  parseQuoteAcceptanceResult,
+  quoteAcceptanceRequestSchema,
+} from "@/lib/quotes/acceptance";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const tokenSchema = z.string().regex(/^[A-Za-z0-9_-]{43}$/);
@@ -32,6 +36,14 @@ export interface StartVerificationState {
 export interface VerifyEmailState {
   message?: string;
   verified?: boolean;
+}
+
+export interface AcceptQuoteState {
+  message?: string;
+  accepted?: boolean;
+  acceptedAt?: string;
+  acceptedAmountPence?: number;
+  acceptedVersionNumber?: number;
 }
 
 function pepper(): string {
@@ -110,6 +122,51 @@ export async function verifyEmailCode(
 
   return {
     verified: true,
-    message: "Email verified. This browser now holds the short-lived authority required for the later acceptance step.",
+    message: "Email verified. Review the total below before accepting this exact quote version.",
+  };
+}
+
+export async function acceptQuote(
+  _previousState: AcceptQuoteState,
+  formData: FormData,
+): Promise<AcceptQuoteState> {
+  const publicFailure = {
+    message: "This quote could not be accepted. Refresh the quote or ask the tradesperson for a new link.",
+  };
+  const parsed = quoteAcceptanceRequestSchema.safeParse({
+    token: formData.get("token"),
+    quoteId: formData.get("quoteId"),
+    versionId: formData.get("versionId"),
+    versionNumber: formData.get("versionNumber"),
+    totalPence: formData.get("totalPence"),
+  });
+  if (!parsed.success) return publicFailure;
+
+  const cookieStore = await cookies();
+  const grant = cookieStore.get(VERIFICATION_COOKIE_NAME)?.value;
+  if (!grant || !/^[A-Za-z0-9_-]{43}$/.test(grant)) return publicFailure;
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("accept_quote", {
+    candidate_token_hash: hashInviteToken(parsed.data.token, pepper()),
+    candidate_grant_hash: hashVerificationGrant(grant, pepper()),
+    expected_quote_id: parsed.data.quoteId,
+    expected_version_id: parsed.data.versionId,
+    expected_version_number: parsed.data.versionNumber,
+    expected_total_pence: parsed.data.totalPence,
+  });
+  const accepted = error ? null : parseQuoteAcceptanceResult(data);
+
+  if (!accepted) return publicFailure;
+
+  cookieStore.delete(VERIFICATION_COOKIE_NAME);
+  return {
+    accepted: true,
+    acceptedAt: accepted.accepted_at,
+    acceptedAmountPence: accepted.accepted_amount_pence,
+    acceptedVersionNumber: accepted.accepted_version_number,
+    message: accepted.already_accepted
+      ? "This exact quote was already accepted."
+      : "Quote accepted successfully.",
   };
 }

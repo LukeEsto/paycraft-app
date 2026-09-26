@@ -27,4 +27,5 @@ remove that receipt and deliver the code out of band.
 - A grant is bound to one invite and quote and cannot authorise another tenant's quote.
 - Incorrect attempts are counted and audited without recording the submitted code.
 - Invalid, expired, exhausted and replayed challenges return the same public failure message.
-- Resend, recovery, customer accounts and quote acceptance remain outside this package.
+- Resend, recovery and customer accounts remain outside this package. F-08 consumes the grant for
+  one version-bound quote acceptance.
