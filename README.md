@@ -60,5 +60,6 @@ Sprint 0 provides the application shell, design tokens, schema, RLS baseline, pr
 quality checks and documentation. The first bounded features add tradesperson registration, atomic
 business onboarding, versioned consent records, customer creation, versioned draft quote creation,
 secure mock quote delivery, invite-bound customer email verification, verified version-bound quote
-acceptance, audit events and a protected Jobs dashboard. Payments, job creation and the remaining
-vertical slice are outside the current implementation.
+acceptance, a protected Jobs dashboard and an explicitly authorised, read-only admin audit feed.
+This completes the original feasibility vertical slice. Payments, job creation and broader operations
+tooling remain outside the current implementation.
